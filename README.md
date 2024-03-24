@@ -8,6 +8,11 @@ Run the following commands in your server console
 ```
 /texture (for now you need to supply your own link, that hosts the terrain.png on this repository that contains the door textures)
 ```
+You can also just edit your texture and add the door textures to slots `182` (icon), `183` (top), and `184` (bottom)
+
+If those texture slots do not work, feel free to change them and edit the block textures (block ids `66`, `67`, `68`, `69`, `70`)
+
+And if you don't like the block ids, you can create new blocks with different ids, and edit the code (it's semi readable I swear!)
 ```
 /punload door (Only if updating and the plugin is loaded already)
 /pcompile door
