@@ -20,6 +20,8 @@ Find the variable `ToggleOnBreak` and change it to true or false, to either togg
 
 then unload, compile and load the plugin as per the commands stated in the installation instructions
 
+When `ToggleOnBreak` is set to true, the only way to destroy the door is to break the block underneath it
+
 # Screenshots
 
 ![Screenshot (60)](https://github.com/morgana-x/Classicube-Doors/assets/89588301/57862fbd-6f8b-48bb-829d-70e589319f86)
