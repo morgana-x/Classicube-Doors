@@ -8,7 +8,7 @@ Run the following commands in your server console
 ```
 /texture (for now you need to supply your own link, that hosts the terrain.png on this repository that contains the door textures)
 ```
-You can also just edit your texture and add the door textures to slots `182` (icon), `183` (top), and `184` (bottom)
+You can also just edit your texture and add the door textures to slots `182` (icon tex), `183` (top tex), and `184` (bottom tex)
 
 If those texture slots do not work, feel free to change them and edit the block textures (block ids `66`, `67`, `68`, `69`, `70`)
 
