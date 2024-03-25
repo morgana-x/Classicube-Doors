@@ -1,5 +1,5 @@
 # Classicube-Doors
-A plugin that adds working doors
+A plugin that adds working doors, that support all rotations, automatically face you on placing, and open and close with (almost) 0 jank!
 
 # Installation
 Paste the folders into your McGalaxy Server folder, replacing files where needed
@@ -14,7 +14,9 @@ Run the following commands in your server console
 /pload door
 ```
 
-You can also just edit your texture and add the door textures to slots `182` (icon tex), `183` (top tex), and `184` (bottom tex). If those texture slots do not work, feel free to change them and edit the block textures (block ids `66`, `67`, `68`, `69`, `70`). And if you don't like the block ids, you can create new blocks with different ids, and edit the code (it's semi readable I swear!)
+You can also just edit your texture and add the door textures to slots `182` (icon tex), `183` (top tex), and `184` (bottom tex)
+
+Please read the code in absense of conviction to add more documentation
 
 # Configuration
 Open Plugins/Door.cs
