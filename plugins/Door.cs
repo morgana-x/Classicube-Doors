@@ -11,19 +11,14 @@ using MCGalaxy.Maths;
 namespace MCGalaxy {
 	public class DoorBlock {
 		public BlockID Item_Block        {get; set;}
-		
 		public BlockID Top_Block         {get; set;}
 		public BlockID Top_Block_Open    {get; set;}
-		
 		public BlockID Bottom_Block      {get; set;}
 		public BlockID Bottom_Block_Open {get; set;}
-		
 		public BlockID Top_Block_Inverse {get; set;}
 		public BlockID Top_Block_Inverse_Open {get; set;}
-		
 		public BlockID Bottom_Block_Inverse {get; set;}
 		public BlockID Bottom_Block_Inverse_Open {get; set;}
-		
 	}
 	public class DoorConfig {
 		public BlockID BLOCK_ITEM_ID 		{get; set;}
@@ -41,6 +36,25 @@ namespace MCGalaxy {
 		public override bool LoadAtStartup { get { return true; } }
 
 		bool ToggleOnBreak = true;
+
+		public List<DoorConfig> DoorConfigs = new List<DoorConfig>()
+		{
+			new DoorConfig() // Just add more of these if you want more doors! (Make sure you have a unique id, that has 8 further free Ids after it)
+			{
+				BLOCK_ITEM_ID = 66, // Takes 9 slots,  So Block ids 66 to 74 will be reserved for the door, keep in mind when adding new doors!
+				BLOCK_ITEM_NAME = "Wooden Door",
+				TEXTURE_ITEM = 182, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_TOP = 183, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_BOTTOM = 184 // Press F10 to see texture Ids
+			}
+		};
+		
+		
+		
+		
+		
+		
+		
 		public override void Load(bool startup) {
 			//LOAD YOUR PLUGIN WITH EVENTS OR OTHER THINGS!
 			OnBlockChangingEvent.Register(HandleBlockChanged, Priority.Low);
@@ -83,24 +97,7 @@ namespace MCGalaxy {
 				def.FrontTex = Texture; def.BackTex = Texture;
 				def.InventoryOrder = -1;
 			AddBlock(def);
-			//BlockDefinition.Add(def, BlockDefinition.GlobalDefs, null );
 		}
-		        /*
-		Door
-		    "MinX": 0,
-			"MinY": 0,
-			"MinZ": 0,
-			"MaxX": 4,
-			"MaxY": 16,
-			"MaxZ": 16,
-		Door Open
-			"MinX": 0,
-			"MinY": 0,
-			"MinZ": 0,
-			"MaxX": 16,
-			"MaxY": 4,
-			"MaxZ": 16,
-		*/
 		public void AddDoorBlock(ushort Id, ushort MinX, ushort MinY, ushort MinZ, ushort MaxX, ushort MaxY, ushort MaxZ, ushort TEXTURE_SIDE, ushort TEXTURE_FRONT, bool Transperant)
 		{
 				ushort RawID = Id;
@@ -192,38 +189,8 @@ namespace MCGalaxy {
 			AddDoorBlocks(newDoor, config.BLOCK_ITEM_NAME, config.TEXTURE_ITEM, config.TEXTURE_BLOCK_BOTTOM, config.TEXTURE_BLOCK_TOP);
 			DoorTypes.Add(newDoor);
 		}
-		public List<DoorConfig> DoorConfigs = new List<DoorConfig>()
-		{
-			new DoorConfig()
-			{
-				BLOCK_ITEM_ID = 66,
-				BLOCK_ITEM_NAME = "Wooden Door",
-				TEXTURE_ITEM = 182,
-				TEXTURE_BLOCK_BOTTOM = 184,
-				TEXTURE_BLOCK_TOP = 183
-			}
-		};
-		public List<DoorBlock> DoorTypes = new List<DoorBlock>()
-		{
-			/*new DoorBlock() // Wooden
-			{
-				Item_Block = 256 + 66, // t id 182
-				Top_Block = 256 + 69,
-				Bottom_Block = 256 + 67,
-				Top_Block_Open = 256 + 70,
-				Bottom_Block_Open = 256 + 68
-				
-			},*/
-			/*new DoorBlock() // test
-			{
-				Item_Block = 6, // t id 182
-				Top_Block = 22,
-				Bottom_Block = 24,
-				Top_Block_Open = 23,
-				Bottom_Block_Open = 25
-				
-			}*/
-		};
+	
+		public List<DoorBlock> DoorTypes = new List<DoorBlock>(){};
 		public bool IsDoor(BlockID block)
 		{
 			var b = block;
@@ -415,7 +382,7 @@ namespace MCGalaxy {
 			{
 				return;
 			}
-			if (! ( b == d.Bottom_Block || b == d.Bottom_Block_Open))
+			if (! ( b == d.Bottom_Block || b == d.Bottom_Block_Open || b == d.Bottom_Block_Inverse || b == d.Bottom_Block_Inverse_Open))
 			{
 				return;
 			}
