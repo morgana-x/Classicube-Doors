@@ -30,6 +30,22 @@ then unload, compile and load the plugin as per the commands stated in the insta
 
 When `ToggleOnBreak` is set to true, the only way to destroy the door is to break the block underneath it
 
+You will find something like
+```cs
+		public List<DoorConfig> DoorConfigs = new List<DoorConfig>()
+		{
+			new DoorConfig() // Just add more of these if you want more doors! (Make sure you have a unique id, that has 8 further free Ids after it)
+			{
+				BLOCK_ITEM_ID = 66, // Takes 9 slots,  So Block ids 66 to 74 will be reserved for the door, keep in mind when adding new doors!
+				BLOCK_ITEM_NAME = "Wooden Door",
+				TEXTURE_ITEM = 182, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_TOP = 183, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_BOTTOM = 184 // Press F10 to see texture Ids
+			}
+		};
+```
+feel free to add more doors if you want!
+
 # Screenshots
 
 ![Screenshot (60)](https://github.com/morgana-x/Classicube-Doors/assets/89588301/57862fbd-6f8b-48bb-829d-70e589319f86)
