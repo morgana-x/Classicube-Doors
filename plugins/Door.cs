@@ -11,10 +11,26 @@ using MCGalaxy.Maths;
 namespace MCGalaxy {
 	public class DoorBlock {
 		public BlockID Item_Block        {get; set;}
+		
 		public BlockID Top_Block         {get; set;}
-		public BlockID Bottom_Block      {get; set;}
 		public BlockID Top_Block_Open    {get; set;}
+		
+		public BlockID Bottom_Block      {get; set;}
 		public BlockID Bottom_Block_Open {get; set;}
+		
+		public BlockID Top_Block_Inverse {get; set;}
+		public BlockID Top_Block_Inverse_Open {get; set;}
+		
+		public BlockID Bottom_Block_Inverse {get; set;}
+		public BlockID Bottom_Block_Inverse_Open {get; set;}
+		
+	}
+	public class DoorConfig {
+		public BlockID BLOCK_ITEM_ID 		{get; set;}
+		public string  BLOCK_ITEM_NAME 		{get; set;}
+		public ushort  TEXTURE_ITEM 		{get; set;}
+		public ushort  TEXTURE_BLOCK_TOP    {get; set;}
+		public ushort  TEXTURE_BLOCK_BOTTOM {get; set;}
 	}
 	public class Door : Plugin {
 		public override string name { get { return "Door"; } }
@@ -28,7 +44,10 @@ namespace MCGalaxy {
 		public override void Load(bool startup) {
 			//LOAD YOUR PLUGIN WITH EVENTS OR OTHER THINGS!
 			OnBlockChangingEvent.Register(HandleBlockChanged, Priority.Low);
-			
+			foreach (var d in DoorConfigs)
+			{
+				LoadDoor(d);
+			}
 		}
                         
 		public override void Unload(bool shutdown) {
@@ -40,11 +59,153 @@ namespace MCGalaxy {
 			//HELP INFO!
 		}
 		
+		public void AddBlock(BlockDefinition def)
+		{
+			BlockDefinition.Add(def, BlockDefinition.GlobalDefs, null );
+		}
+		public void AddBlockItem(ushort Id, string Name, ushort Texture)
+		{
+			BlockDefinition def = new BlockDefinition();
+				def.RawID = Id; def.Name = Name;
+				def.Speed = 1; def.CollideType = 0;
+				def.TopTex = Texture; def.BottomTex = Texture;
+				
+				def.BlocksLight = false; def.WalkSound = 1;
+				def.FullBright = false; def.Shape = 0;
+				def.BlockDraw = 2; def.FallBack = 5;
+				
+				def.FogDensity = 0;
+				def.FogR = 0; def.FogG = 0; def.FogB = 0;
+				def.MinX = 0; def.MinY = 0; def.MinZ = 0;
+				def.MaxX = 0; def.MaxY = 0; def.MaxZ = 0;
+				
+				def.LeftTex = Texture; def.RightTex = Texture;
+				def.FrontTex = Texture; def.BackTex = Texture;
+				def.InventoryOrder = -1;
+			AddBlock(def);
+			//BlockDefinition.Add(def, BlockDefinition.GlobalDefs, null );
+		}
+		        /*
+		Door
+		    "MinX": 0,
+			"MinY": 0,
+			"MinZ": 0,
+			"MaxX": 4,
+			"MaxY": 16,
+			"MaxZ": 16,
+		Door Open
+			"MinX": 0,
+			"MinY": 0,
+			"MinZ": 0,
+			"MaxX": 16,
+			"MaxY": 4,
+			"MaxZ": 16,
+		*/
+		public void AddDoorBlock(ushort Id, ushort MinX, ushort MinY, ushort MinZ, ushort MaxX, ushort MaxY, ushort MaxZ, ushort TEXTURE_SIDE, ushort TEXTURE_FRONT, bool Transperant)
+		{
+				ushort RawID = Id;
+				string Name = "";
+				byte Speed = 1;
+				byte CollideType = 2;
+				ushort TopTex = TEXTURE_SIDE;
+				ushort BottomTex = TEXTURE_SIDE;
+				bool BlocksLight = false;
+				byte WalkSound = 1;
+				bool FullBright = false;
+				byte Shape = 16;
+				byte BlockDraw =  (byte)(Transperant ? 1 : 0);
+				byte FallBack = 5;
+				byte FogDensity = 0;
+				byte FogR = 0;
+				byte FogG = 0;
+				byte FogB = 0;
+				ushort LeftTex = TEXTURE_FRONT;
+				ushort RightTex = TEXTURE_FRONT;
+				ushort FrontTex = TEXTURE_FRONT;
+				ushort BackTex = TEXTURE_FRONT;
+				int InventoryOrder = -1;
+				BlockDefinition def = new BlockDefinition();
+				def.RawID = RawID; def.Name = Name;
+				def.Speed = Speed; def.CollideType = CollideType;
+				def.TopTex = TopTex; def.BottomTex = BottomTex;
+				
+				def.BlocksLight = BlocksLight; def.WalkSound = WalkSound;
+				def.FullBright = FullBright; def.Shape = Shape;
+				def.BlockDraw = BlockDraw; def.FallBack = FallBack;
+				
+				def.FogDensity = FogDensity;
+				def.FogR = FogR; def.FogG = FogG; def.FogB = FogB;
+				def.MinX = (byte)MinX; def.MinY = (byte)MinY; def.MinZ = (byte)MinZ;
+				def.MaxX = (byte)MaxX; def.MaxY = (byte)MaxY; def.MaxZ = (byte)MaxZ;
+				
+				def.LeftTex = LeftTex; def.RightTex = RightTex;
+				def.FrontTex = FrontTex; def.BackTex = BackTex;
+				def.InventoryOrder = InventoryOrder;
+				AddBlock(def);
+		}
+		public void AddDoorBlocks(DoorBlock door, string BLOCK_ITEM_NAME, ushort TEXTURE_ITEM, ushort TEXTURE_BLOCK_BOTTOM, ushort TEXTURE_BLOCK_TOP)
+		{
+				AddBlockItem(door.Item_Block, BLOCK_ITEM_NAME, TEXTURE_ITEM);
+				
 
-		
+				AddDoorBlock(door.Bottom_Block,		 		 0, 0, 0,   4, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
+				AddDoorBlock(door.Bottom_Block_Open, 		 0, 0, 0,   16, 4, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
+				AddDoorBlock(door.Bottom_Block_Inverse,	 	 12, 0, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
+				AddDoorBlock(door.Bottom_Block_Inverse_Open, 0, 12, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
+				
+				AddDoorBlock(door.Top_Block, 				0,0,0, 4, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Open, 			0,0,0, 16, 4, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Inverse, 		12, 0, 0,   16, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Inverse_Open, 	0, 12, 0,   16, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
+				
+				
+				door.Item_Block 		       = (ushort)(door.Item_Block + 256					);
+				door.Bottom_Block_Open         = (ushort)(door.Bottom_Block_Open + 256			);
+				door.Bottom_Block 		  	   = (ushort)(door.Bottom_Block + 256				);
+				door.Bottom_Block_Inverse	   = (ushort)(door.Bottom_Block_Inverse + 256		);
+				door.Bottom_Block_Inverse_Open = (ushort)(door.Bottom_Block_Inverse_Open + 256	);
+				
+				door.Top_Block 					= (ushort)(door.Top_Block + 256						);
+				door.Top_Block_Open 			= (ushort)(door.Top_Block_Open + 256				);
+				door.Top_Block_Inverse 			= (ushort)(door.Top_Block_Inverse + 256				);
+				door.Top_Block_Inverse_Open 	= (ushort)(door.Top_Block_Inverse_Open + 256		);
+				
+				// (0 0 0) (4 16 16)
+				// (0 0 0) (16 16 4)
+				// (4 0 0) (4 16 16)?
+				// (4 0 0) (16 16 4)?
+
+		}
+		public void LoadDoor(DoorConfig config)
+		{
+			DoorBlock newDoor = new DoorBlock(){
+				Item_Block = config.BLOCK_ITEM_ID,
+				Top_Block = (ushort)(config.BLOCK_ITEM_ID + 1),
+				Top_Block_Open = (ushort)(config.BLOCK_ITEM_ID + 2),
+				Bottom_Block = (ushort)(config.BLOCK_ITEM_ID + 3),
+				Bottom_Block_Open = (ushort)(config.BLOCK_ITEM_ID + 4),
+				Top_Block_Inverse = (ushort)(config.BLOCK_ITEM_ID + 5),
+				Top_Block_Inverse_Open = (ushort)(config.BLOCK_ITEM_ID + 6),
+				Bottom_Block_Inverse = (ushort)(config.BLOCK_ITEM_ID + 7),
+				Bottom_Block_Inverse_Open = (ushort)(config.BLOCK_ITEM_ID + 8),
+			};
+			AddDoorBlocks(newDoor, config.BLOCK_ITEM_NAME, config.TEXTURE_ITEM, config.TEXTURE_BLOCK_BOTTOM, config.TEXTURE_BLOCK_TOP);
+			DoorTypes.Add(newDoor);
+		}
+		public List<DoorConfig> DoorConfigs = new List<DoorConfig>()
+		{
+			new DoorConfig()
+			{
+				BLOCK_ITEM_ID = 66,
+				BLOCK_ITEM_NAME = "Wooden Door",
+				TEXTURE_ITEM = 182,
+				TEXTURE_BLOCK_BOTTOM = 184,
+				TEXTURE_BLOCK_TOP = 183
+			}
+		};
 		public List<DoorBlock> DoorTypes = new List<DoorBlock>()
 		{
-			new DoorBlock() // Wooden
+			/*new DoorBlock() // Wooden
 			{
 				Item_Block = 256 + 66, // t id 182
 				Top_Block = 256 + 69,
@@ -52,7 +213,7 @@ namespace MCGalaxy {
 				Top_Block_Open = 256 + 70,
 				Bottom_Block_Open = 256 + 68
 				
-			},
+			},*/
 			/*new DoorBlock() // test
 			{
 				Item_Block = 6, // t id 182
@@ -115,6 +276,22 @@ namespace MCGalaxy {
 				{
 					return door;
 				}
+				if (door.Top_Block_Inverse == block)
+				{
+					return door;
+				}
+				if (door.Top_Block_Inverse_Open == block)
+				{
+					return door;
+				}
+				if (door.Bottom_Block_Inverse == block)
+				{
+					return door;
+				}
+				if (door.Bottom_Block_Inverse_Open == block)
+				{
+					return door;
+				}
 			}
 			return null;
 		}
@@ -132,7 +309,7 @@ namespace MCGalaxy {
 			{
 				return false;
 			}
-			return ( (b == d.Bottom_Block) || (b == d.Bottom_Block_Open));
+			return ( (b == d.Bottom_Block) || (b == d.Bottom_Block_Open) || (b == d.Bottom_Block_Inverse) || (b == d.Bottom_Block_Inverse_Open));
 		}
 	
 		public void OpenDoor(Level level, ushort x, ushort y, ushort z)
@@ -144,12 +321,14 @@ namespace MCGalaxy {
 				return;
 			}
 			int offset_y = 0;
-			if (!((b == d.Bottom_Block) || (b == d.Bottom_Block_Open)))
+			if (!IsDoorBottom(level, x, y, z))
 			{
 				offset_y = -1;
 			}
-			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, d.Bottom_Block_Open);
-			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, d.Top_Block_Open);	
+			ushort result_bottom = (b == d.Top_Block_Inverse || b == d.Bottom_Block_Inverse) ? d.Bottom_Block_Inverse_Open : d.Bottom_Block_Open;
+			ushort result_top    = (b == d.Top_Block_Inverse || b == d.Bottom_Block_Inverse) ? d.Top_Block_Inverse_Open    : d.Top_Block_Open;
+			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, result_bottom);
+			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, result_top   );	
 			
 		}
 		public void CloseDoor(Level level, ushort x, ushort y, ushort z)
@@ -161,12 +340,14 @@ namespace MCGalaxy {
 				return;
 			}
 			int offset_y = 0;
-			if (!((b == d.Bottom_Block) || (b == d.Bottom_Block_Open)))
+			if (!IsDoorBottom(level, x, y, z))
 			{
 				offset_y = -1;
 			}
-			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, d.Bottom_Block);
-			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, d.Top_Block);
+			ushort result_bottom = (b == d.Top_Block_Inverse_Open || b == d.Bottom_Block_Inverse_Open) ? d.Bottom_Block_Inverse : d.Bottom_Block;
+			ushort result_top    = (b == d.Top_Block_Inverse_Open || b == d.Bottom_Block_Inverse_Open) ? d.Top_Block_Inverse    : d.Top_Block;
+			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, result_bottom);
+			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, result_top   );	
 		}
 		public void ToggleDoor(Level level, ushort x, ushort y, ushort z)
 		{
@@ -176,11 +357,11 @@ namespace MCGalaxy {
 			{
 				return;
 			}
-			if ( b == d.Top_Block || b == d.Bottom_Block)
+			if ( b == d.Top_Block || b == d.Bottom_Block || b == d.Top_Block_Inverse || b == d.Bottom_Block_Inverse)
 			{
 				OpenDoor( level, x, y, z);
 			}
-			else if (b == d.Top_Block_Open || b == d.Bottom_Block_Open)
+			else if (b == d.Top_Block_Open || b == d.Bottom_Block_Open || b == d.Bottom_Block_Inverse_Open || b == d.Top_Block_Inverse_Open)
 			{
 				CloseDoor(level, x, y, z);
 			}
@@ -197,8 +378,17 @@ namespace MCGalaxy {
 				return;
 			}
 			DoorBlock d = GetDoorFromItem(block);
-			p.level.UpdateBlock(p, (ushort)x, (ushort)y, (ushort)z, d.Bottom_Block);
-			p.level.UpdateBlock(p, (ushort)x, (ushort)(y+1), (ushort)z, d.Top_Block);
+			
+			bool Inverse = ( ((p.Pos.X /32 ) > x) || ((p.Pos.Z /32 ) > z) );
+			bool Open = (p.Pos.Z /32 ) < z || (p.Pos.Z /32 ) > z;
+			p.level.UpdateBlock(Player.Console, (ushort)x, (ushort)(y  ), (ushort)z, ( Inverse ? d.Bottom_Block_Inverse : d.Bottom_Block));
+			p.level.UpdateBlock(Player.Console, (ushort)x, (ushort)(y+1), (ushort)z, ( Inverse ? d.Top_Block_Inverse    : d.Top_Block   ));
+			
+			if (Open)
+			{
+				OpenDoor(p.level, x, y, z);
+			}
+		
 		}
 		
 		void HandleBlockChanged(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
