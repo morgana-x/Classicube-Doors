@@ -1,5 +1,6 @@
 # Classicube-Doors
 A plugin that adds working doors, that support all rotations, automatically face you on placing, and open and close with (almost) 0 jank!
+![c08dc953-fb3e-4084-8525-6833dad908dc](https://github.com/morgana-x/Classicube-Doors/assets/89588301/aad39cc1-6ad9-4b04-acc2-7a41ca264354)
 
 # Installation
 Paste the folders into your McGalaxy Server folder, replacing files where needed
