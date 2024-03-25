@@ -19,6 +19,8 @@ You can also just edit your texture and add the door textures to slots `182` (ic
 
 Please read the code in absense of conviction to add more documentation
 
+You may need the [infid version of mcgalaxy](https://github.com/ClassiCube/MCGalaxy/blob/master/Uploads/MCGalaxy_infid.dll) for this plugin to work, replace McGalaxy_.dll with McGalaxy_infid.dll (renaming it to be the same name)
+
 # Configuration
 Open Plugins/Door.cs
 
