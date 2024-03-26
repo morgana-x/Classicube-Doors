@@ -15,7 +15,9 @@ Run the following commands in your server console
 /pload door
 ```
 ```
-/texture (either host the terrain.png provided or edit your texture at whatever texture slots you choose, see configuration steps below for custom texture id slots)
+/texture (either host the terrain.png provided or
+          edit your texture at whatever texture slots you choose, see configuration steps below for custom texture id slots
+	  feel free to paste door_textures_raw.png into your terrain.png at a free row of texture ids)
 ```
 
 
