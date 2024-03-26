@@ -50,3 +50,4 @@ feel free to add more doors if you want!
 
 ![Screenshot (60)](https://github.com/morgana-x/Classicube-Doors/assets/89588301/57862fbd-6f8b-48bb-829d-70e589319f86)
 ![Screenshot (59)](https://github.com/morgana-x/Classicube-Doors/assets/89588301/bd43cdc1-5723-4112-974d-e071e496d988)
+![Screenshot (63)](https://github.com/morgana-x/Classicube-Doors/assets/89588301/c48b9f16-388c-4b46-9673-aa0f0a32d26c)
