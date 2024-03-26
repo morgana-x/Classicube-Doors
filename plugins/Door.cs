@@ -46,7 +46,23 @@ namespace MCGalaxy {
 				TEXTURE_ITEM = 182, // Press F10 to see texture Ids
 				TEXTURE_BLOCK_TOP = 183, // Press F10 to see texture Ids
 				TEXTURE_BLOCK_BOTTOM = 184 // Press F10 to see texture Ids
-			}
+			},
+			new DoorConfig() // Iron Door
+			{
+				BLOCK_ITEM_ID = 75, // Takes 9 slots,  So Block ids 75 to 83 will be reserved for the door, keep in mind when adding new doors!
+				BLOCK_ITEM_NAME = "Iron Door",
+				TEXTURE_ITEM = 185, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_TOP = 186, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_BOTTOM = 187 // Press F10 to see texture Ids
+			},
+			new DoorConfig() // Dark Oak Door
+			{
+				BLOCK_ITEM_ID = 84, // Takes 9 slots,  So Block ids 84 to 95 will be reserved for the door, keep in mind when adding new doors!
+				BLOCK_ITEM_NAME = "Dark Oak Door",
+				TEXTURE_ITEM = 188, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_TOP = 189, // Press F10 to see texture Ids
+				TEXTURE_BLOCK_BOTTOM = 190 // Press F10 to see texture Ids
+			},
 		};
 		
 		
@@ -150,10 +166,10 @@ namespace MCGalaxy {
 				AddDoorBlock(door.Bottom_Block_Inverse,	 	 12, 0, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
 				AddDoorBlock(door.Bottom_Block_Inverse_Open, 0, 12, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_BOTTOM, false);
 				
-				AddDoorBlock(door.Top_Block, 				0,0,0, 4, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
-				AddDoorBlock(door.Top_Block_Open, 			0,0,0, 16, 4, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
-				AddDoorBlock(door.Top_Block_Inverse, 		12, 0, 0,   16, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
-				AddDoorBlock(door.Top_Block_Inverse_Open, 	0, 12, 0,   16, 16, 16, TEXTURE_BLOCK_TOP, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block, 				0,0,0, 4, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Open, 			0,0,0, 16, 4, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Inverse, 		12, 0, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_TOP, true);
+				AddDoorBlock(door.Top_Block_Inverse_Open, 	0, 12, 0,   16, 16, 16, TEXTURE_BLOCK_BOTTOM, TEXTURE_BLOCK_TOP, true);
 				
 				
 				door.Item_Block 		       = (ushort)(door.Item_Block + 256					);
