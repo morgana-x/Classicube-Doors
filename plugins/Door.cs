@@ -36,12 +36,12 @@ namespace MCGalaxy {
 		public override string welcome { get { return "Loaded Message!"; } }
 		public override string creator { get { return "morgana"; } }
 		public override bool LoadAtStartup { get { return true; } }
-		/*public enum MouseButton { Left, Right, Middle }  
-		public enum MouseAction { Pressed, Released }
-		public enum TargetBlockFace { AwayX, TowardsX, AwayY, TowardsY, AwayZ, TowardsZ, None }*/
-		bool ToggleOnBreak = true;
+
+		public bool SoundEnabled = true; // Whether sound is enabled for CEF PLUGIN CLIENTS ONLY
+		public int SoundRange = 4; // How many blocks away can players hear doors opening (CEF PLUGIN CLIENTS ONLY)
 		
 		public ushort DoorBlockIdStorageIndex = 300; // Beggining of reserved Door slots will take up 8*Number of doors
+		
 		public List<DoorConfig> DoorConfigs = new List<DoorConfig>()
 		{
 			new DoorConfig() // Just add more of these if you want more doors! (Make sure you have a unique id, that has 8 further free Ids after it)
@@ -237,7 +237,51 @@ namespace MCGalaxy {
 		void HandlePlayerConnect(Player p)
         {
             SendDoorPerms(p);
+			if (p.Session.ClientName().CaselessContains("cef"))
+			{
+				p.Message("cef create -n dooropen -gasq https://youtu.be/G0XB3GaDSjM");
+				p.Message("cef create -n doorclose -gasq https://youtu.be/f--utoY1C9s");
+			}
         }
+		void PlaySound(Player p, string sound)
+		{
+			if (!SoundEnabled)
+			{
+				return;
+			}
+			if (!p.Session.ClientName().CaselessContains("cef"))
+			{
+				return;
+			}
+			p.Message("cef resume -n " + sound);
+		}
+		void PlaySound3D(Level level, ushort x, ushort y, ushort z, string sound)
+		{
+			if (!SoundEnabled)
+			{
+				return;
+			}
+			foreach (Player p in PlayerInfo.Online.Items)
+			{
+				if (p.level != level)
+				{
+					continue;
+				}
+				
+				int px = p.Pos.X / 32;
+				int py = p.Pos.Y / 32;
+				int pz = p.Pos.Z / 32;
+				int dx = px-x;
+				int dy = py-y;
+				int dz = pz-z;
+				double dist = Math.Sqrt( (dx*dx) + (dy*dy) + (dz*dz));
+				if (dist > SoundRange)
+				{
+					continue;
+				}
+				PlaySound(p, sound);
+			}
+		}
 		public void AddDoorBlock(ushort Id, ushort MinX, ushort MinY, ushort MinZ, ushort MaxX, ushort MaxY, ushort MaxZ, ushort TEXTURE_SIDE, ushort TEXTURE_FRONT, bool Transperant)
 		{
 				ushort RawID = Id;
@@ -421,7 +465,7 @@ namespace MCGalaxy {
 			return ( (b == d.Bottom_Block) || (b == d.Bottom_Block_Open) || (b == d.Bottom_Block_Inverse) || (b == d.Bottom_Block_Inverse_Open));
 		}
 	
-		public void OpenDoor(Level level, ushort x, ushort y, ushort z)
+		public void OpenDoor(Level level, ushort x, ushort y, ushort z, bool mute = false)
 		{
 			BlockID b = level.FastGetBlock((ushort)x, (ushort)(y), (ushort)z);
 			DoorBlock d = GetDoorFromBlock(b);
@@ -437,7 +481,11 @@ namespace MCGalaxy {
 			ushort result_bottom = (b == d.Top_Block_Inverse || b == d.Bottom_Block_Inverse) ? d.Bottom_Block_Inverse_Open : d.Bottom_Block_Open;
 			ushort result_top    = (b == d.Top_Block_Inverse || b == d.Bottom_Block_Inverse) ? d.Top_Block_Inverse_Open    : d.Top_Block_Open;
 			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, result_bottom);
-			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, result_top   );	
+			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, result_top   );
+			if (!mute)
+			{
+				PlaySound3D(level, x, y, z, "dooropen");
+			}
 			
 		}
 		public void CloseDoor(Level level, ushort x, ushort y, ushort z)
@@ -457,6 +505,7 @@ namespace MCGalaxy {
 			ushort result_top    = (b == d.Top_Block_Inverse_Open || b == d.Bottom_Block_Inverse_Open) ? d.Top_Block_Inverse    : d.Top_Block;
 			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y    ), z, result_bottom);
 			level.UpdateBlock(Player.Console, x, (ushort)(y + offset_y + 1), z, result_top   );	
+			PlaySound3D(level, x, y, z, "doorclose");
 		}
 		public void ToggleDoor(Level level, ushort x, ushort y, ushort z)
 		{
@@ -495,7 +544,7 @@ namespace MCGalaxy {
 			
 			if (Open)
 			{
-				OpenDoor(p.level, x, y, z);
+				OpenDoor(p.level, x, y, z, true);
 			}
 		
 		}
