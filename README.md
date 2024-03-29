@@ -65,6 +65,12 @@ public ushort DoorBlockIdStorageIndex = 300; // Beggining of reserved Door slots
 			},
 		};
 ```
+## Sound
+Only for clients with the [CEF plugin](https://github.com/SpiralP/classicube-cef-loader-plugin)
+```cs
+		public bool SoundEnabled = true; // Whether sound is enabled for CEF PLUGIN CLIENTS ONLY
+		public int SoundRange = 4; // How many blocks away can players hear doors opening (CEF PLUGIN CLIENTS ONLY)
+```
 
 feel free to add more doors if you want!
 
