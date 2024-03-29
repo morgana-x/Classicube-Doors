@@ -6,7 +6,9 @@ A plugin that adds working doors, that support all rotations, automatically face
 ![c08dc953-fb3e-4084-8525-6833dad908dc](https://github.com/morgana-x/Classicube-Doors/assets/89588301/aad39cc1-6ad9-4b04-acc2-7a41ca264354)
 
 # Installation
-You need the [infid version of mcgalaxy](https://github.com/ClassiCube/MCGalaxy/blob/master/Uploads/MCGalaxy_infid.dll) for this plugin to work, replace McGalaxy_.dll with McGalaxy_infid.dll (renaming it to be the same name)
+You will (most likely) need the [infid version of mcgalaxy](https://github.com/ClassiCube/MCGalaxy/blob/master/Uploads/MCGalaxy_infid.dll) for this plugin to work, replace McGalaxy_.dll with McGalaxy_infid.dll (renaming it to be the same name)
+
+If you don't want to use the infid version, try changing the DoorBlockIdStorageIndex to somewhere between 70 and 220 (See configuration) 
 
 Paste the Plugins folder into your server
 
