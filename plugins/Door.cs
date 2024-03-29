@@ -38,7 +38,7 @@ namespace MCGalaxy {
 		public override bool LoadAtStartup { get { return true; } }
 
 		public bool SoundEnabled = true; // Whether sound is enabled for CEF PLUGIN CLIENTS ONLY
-		public int SoundRange = 4; // How many blocks away can players hear doors opening (CEF PLUGIN CLIENTS ONLY)
+		public int SoundRange = 5; // How many blocks away can players hear doors opening (CEF PLUGIN CLIENTS ONLY)
 		
 		public ushort DoorBlockIdStorageIndex = 300; // Beggining of reserved Door slots will take up 8*Number of doors
 		
