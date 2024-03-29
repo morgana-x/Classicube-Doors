@@ -253,7 +253,8 @@ namespace MCGalaxy {
 			{
 				return;
 			}
-			p.Message("cef resume -n " + sound);
+			p.Message("cef time -n " + sound + " " + 0);
+			//p.Message("cef resume -n " + sound);
 		}
 		void PlaySound3D(Level level, ushort x, ushort y, ushort z, string sound)
 		{
@@ -267,7 +268,10 @@ namespace MCGalaxy {
 				{
 					continue;
 				}
-				
+				if (!p.Session.ClientName().CaselessContains("cef"))
+				{
+					continue;
+				}
 				int px = p.Pos.X / 32;
 				int py = p.Pos.Y / 32;
 				int pz = p.Pos.Z / 32;
